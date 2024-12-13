@@ -6,7 +6,8 @@ from ultralytics import YOLO
 
 # Client-specific configurations
 CLIENT_ID = "1"  # Unique client identifier
-SERVER_URL = "http://127.0.0.1:5000"  # Hub server URL
+SERVER_URL = "http://127.0.0.1:5000" 
+# SERVER_URL = "https://empety-shelf-detection-system.onrender.com"  # Hub server URL
 CAPTURE_INTERVAL = 10  # Interval between captures in seconds
 
 # Load the YOLO model
