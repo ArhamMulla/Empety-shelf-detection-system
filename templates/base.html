@@ -1,24 +1,112 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Camera App</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-</head>
-<body>
-    <nav>
-        <a href="{{ url_for('index') }}">Home</a>
-        {% if session.get('user_id') %}
-            <a href="{{ url_for('dashboard') }}">Dashboard</a>
-            <a href="{{ url_for('logout') }}">Logout</a>
-        {% else %}
-            <a href="{{ url_for('login') }}">Login</a>
-            <a href="{{ url_for('register') }}">Register</a>
-        {% endif %}
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/style.css') }}"
+    />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      /* Keyframes for floating animation */
+      @keyframes floating {
+        0%,
+        100% {
+          transform: translateY(0);
+        }
+        50% {
+          transform: translateY(-20px);
+        }
+      }
+
+      /* Keyframes for text slide animation */
+      @keyframes text-slide {
+        0% {
+          transform: translateY(50px);
+          opacity: 0;
+        }
+        100% {
+          transform: translateY(0);
+          opacity: 1;
+        }
+      }
+
+      /* Keyframes for text fade animation */
+      @keyframes text-fade {
+        0% {
+          opacity: 0;
+        }
+        100% {
+          opacity: 1;
+        }
+      }
+
+      /* Classes for animations */
+      .animation-floating {
+        animation: floating 6s infinite ease-in-out;
+      }
+
+      .animation-delay-1 {
+        animation-delay: 2s;
+      }
+
+      .animation-delay-2 {
+        animation-delay: 4s;
+      }
+
+      .animate-text-slide {
+        animation: text-slide 2s ease-out;
+      }
+
+      .animate-text-fade {
+        animation: text-fade 3s ease-in-out;
+      }
+    </style>
+  </head>
+  <body class="bg-gradient-to-r from-[#FBF6E9] to-[#E3F0AF] font-sans">
+    <nav class="bg-[#5DB996] shadow-md py-4">
+      <div class="container mx-auto px-4 flex justify-between items-center">
+        <a href="{{ url_for('index') }}" class="text-2xl font-bold text-white"
+          >Home</a
+        >
+        <div>
+          {% if session.get('user_id') %}
+          <a
+            href="{{ url_for('dashboard') }}"
+            class="bg-[#118B50] text-white px-4 py-2 rounded-md hover:bg-[#0E703E] mr-2"
+            >Dashboard</a
+          >
+          <a
+            href="{{ url_for('logout') }}"
+            class="bg-[#118B50] text-white px-4 py-2 rounded-md hover:bg-[#0E703E]"
+            >Logout</a
+          >
+          {% else %}
+          <a
+            href="{{ url_for('login') }}"
+            class="bg-[#118B50] text-white px-4 py-2 rounded-md hover:bg-[#0E703E] mr-2"
+            >Login</a
+          >
+          <a
+            href="{{ url_for('register') }}"
+            class="bg-[#118B50] text-white px-4 py-2 rounded-md hover:bg-[#0E703E]"
+            >Register</a
+          >
+          {% endif %}
+        </div>
+      </div>
     </nav>
-    <div class="container">
-        {% block content %}{% endblock %}
-    </div>
-</body>
+    <section>
+      <div
+        class="min-h-screen flex items-center justify-center relative overflow-hidden"
+      >
+        <div class="text-center relative z-10">
+          {% block content %} {% endblock %}
+        </div>
+      </div>
+    </section>
+  </body>
 </html>
+

@@ -1,15 +1,245 @@
-{% extends 'base.html' %}
-{% block content %}
-<h1>Register</h1>
-<form method="POST">
-    <label for="business_name">Business Name:</label>
-    <input type="text" name="business_name" required>
-    <label for="address">Address:</label>
-    <input type="text" name="address" required>
-    <label for="username">Username:</label>
-    <input type="text" name="username" required>
-    <label for="password">Password:</label>
-    <input type="password" name="password" required>
-    <button type="submit">Register</button>
-</form>
+{% extends 'base.html' %} {% block content %}
+<style>
+  :root {
+    --primary-color: #118b50;
+    --secondary-color: #f76c6c;
+    --accent-color: #e3f0af;
+    --background-color: #fbf6e9;
+    --hover-color: #45a049;
+    --font-family: "Roboto", sans-serif;
+    --button-hover: #3e8e41;
+  }
+
+  section {
+    font-family: var(--font-family);
+    margin: 0;
+    padding: 0;
+    background-color: var(--background-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+  }
+
+  .register-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    background-color: #fff;
+    border-radius: 20px;
+    width: 90%;
+    max-width: 1000px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    padding: 40px;
+    transition: all 0.3s ease;
+    flex-wrap: wrap;
+  }
+
+  .register-container:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+  }
+
+  .register-left,
+  .register-right {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex: 1;
+    padding: 20px;
+  }
+
+  .register-left {
+    flex-basis: 45%;
+    max-width: 45%;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .register-left h1 {
+    font-size: 36px;
+    color: var(--primary-color);
+    margin-bottom: 20px;
+    text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
+  }
+
+  .register-left p {
+    font-size: 16px;
+    margin-bottom: 40px;
+    color: var(--primary-color);
+    line-height: 1.5;
+  }
+
+  .register-right {
+    background-color: var(--primary-color);
+    color: #fff;
+    border-radius: 20px;
+    padding-left: 30px;
+    box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.2);
+    flex-basis: 45%;
+    max-width: 45%;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .register-right label {
+    font-size: 14px;
+    margin-bottom: 10px;
+  }
+
+  .register-right input {
+    width: 100%;
+    padding: 12px;
+    font-size: 14px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    background-color: #fff;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+  }
+
+  .register-right input:focus {
+    border-color: var(--secondary-color);
+    transform: scale(1.05);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  }
+
+  .register-right input::placeholder {
+    color: var(--primary-color);
+    font-size: 14px;
+  }
+
+  .register-right button {
+    width: 100%;
+    padding: 14px;
+    background-color: var(--secondary-color);
+    color: #fff;
+    font-size: 16px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+  }
+
+  .register-right button:hover {
+    background-color: var(--hover-color);
+    transform: scale(1.05);
+  }
+
+  .register-right button:active {
+    transform: scale(0.98);
+  }
+
+  .register-right button:focus {
+    outline: none;
+    box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.2);
+  }
+
+  /* Decorative Background Pattern */
+  .register-left::before {
+    content: "";
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background: url("https://www.transparenttextures.com/patterns/just-gray.png");
+    background-size: cover;
+    opacity: 0.05;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+  }
+
+  /* Animation for container */
+  @keyframes slideIn {
+    0% {
+      transform: translateY(-50%);
+      opacity: 0;
+    }
+    100% {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+
+  .register-container {
+    animation: slideIn 0.8s ease-out;
+  }
+
+  @media (max-width: 768px) {
+    .register-container {
+      flex-direction: column;
+      width: 100%;
+      padding: 20px;
+    }
+
+    .register-left,
+    .register-right {
+      width: 100%;
+      padding: 15px;
+    }
+
+    .register-left h1 {
+      font-size: 28px;
+    }
+
+    .register-right button {
+      font-size: 14px;
+    }
+  }
+</style>
+
+<div class="register-container">
+  <div class="register-left">
+    <h1>Welcome Back!</h1>
+    <p>
+      Join our platform to manage your business with ease. Enter your details
+      and let's get started.
+    </p>
+  </div>
+  <div class="register-right">
+    <form method="POST">
+      <label for="business_name">Business Name</label>
+      <input
+        type="text"
+        id="business_name"
+        name="business_name"
+        placeholder="Enter your business name"
+        required
+      />
+
+      <label for="address">Address</label>
+      <input
+        type="text"
+        id="address"
+        name="address"
+        placeholder="Enter your business address"
+        required
+      />
+
+      <label for="username">Username</label>
+      <input
+        type="text"
+        id="username"
+        name="username"
+        placeholder="Enter a username"
+        required
+      />
+
+      <label for="password">Password</label>
+      <input
+        type="password"
+        id="password"
+        name="password"
+        placeholder="Create a password"
+        required
+      />
+
+      <button type="submit">Register</button>
+    </form>
+  </div>
+</div>
+
 {% endblock %}
+
