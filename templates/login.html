@@ -16,38 +16,10 @@
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    background: radial-gradient(
-      circle,
-      var(--primary-color),
-      var(--secondary-color)
-    );
-    animation: backgroundMotion 5s infinite alternate;
+    
   }
 
-  /* Background gradient animation */
-  @keyframes backgroundMotion {
-    0% {
-      background: radial-gradient(
-        circle,
-        var(--accent-color),
-        var(--secondary-color)
-      );
-    }
-    50% {
-      background: radial-gradient(
-        circle,
-        var(--secondary-color),
-        var(--accent-color)
-      );
-    }
-    100% {
-      background: radial-gradient(
-        circle,
-        var(--accent-color),
-        var(--secondary-color)
-      );
-    }
-  }
+
 
   /* Container with a 3D rotating effect */
   .login-container {
@@ -148,6 +120,7 @@
     margin-bottom: 20px;
     font-size: 14px;
     background-color: var(--accent-color);
+    color: #000;
     box-sizing: border-box;
     transition: all 0.3s ease;
   }
@@ -198,9 +171,9 @@
 
 <div class="login-container">
   <div class="login-left">
-    <h1>Login</h1>
+    <h1 class="ml-5">Login</h1>
     <p>
-      Access your account and continue monitoring your supermarket stock. Stay
+      Access your account and continue monitoring your supermarket shelves. Stay
       connected and updated.
     </p>
   </div>

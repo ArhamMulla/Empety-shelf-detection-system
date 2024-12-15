@@ -6,9 +6,9 @@ from ultralytics import YOLO
 
 # Client-specific configurations
 CLIENT_ID = "1"  # Unique client identifier
-SERVER_URL = "http://127.0.0.1:5000" 
-# SERVER_URL = "https://empety-shelf-detection-system.onrender.com"  # Hub server URL
-CAPTURE_INTERVAL = 10  # Interval between captures in seconds
+# SERVER_URL = "http://127.0.0.1:5000" 
+SERVER_URL = "https://empety-shelf-detection-system.onrender.com"  # Hub server URL
+CAPTURE_INTERVAL = 5  # Interval between captures in seconds
 
 # Load the YOLO model
 model = YOLO("red_best.pt")  # Path to your custom YOLO model
@@ -64,7 +64,6 @@ def count_objects_in_frame(frame):
     results = model(frame)  # Run the YOLO model on the frame
     return len(results[0].boxes), results  # Return the count and results
 
-
 def capture_images():
     """Capture images based on the command."""
     global COUNTER  # Use global variables
@@ -91,9 +90,9 @@ def capture_images():
 
             ret, frame = cap.read()
             if ret:
-                # Count objects in the current frame and get detection results
-                object_count, results = count_objects_in_frame(frame)
-                print(f"{CLIENT_ID}: Detected objects: {object_count}")
+                # Count products in the current frame
+                product_count, results = count_products_in_frame(frame)
+                print(f"{CLIENT_ID}: Detected products: {product_count}")
 
                 # Display the detection results in a separate window
                 for result in results:
@@ -105,21 +104,21 @@ def capture_images():
                     print(f"{CLIENT_ID}: Quitting the detection window.")
                     break
 
-                # Compare the object count with the fetched threshold
-                if object_count < threshold_value:
+                # Compare the product count with the fetched threshold
+                if product_count < threshold_value:
                     COUNTER -= 1
-                    print(f"{CLIENT_ID}: Object count: {object_count} < Threshold count: {threshold_value} Counter: {COUNTER}")
+                    print(f"{CLIENT_ID}: Product count: {product_count} < Threshold count: {threshold_value} Counter: {COUNTER}")
 
                     if COUNTER == 0:
                         print(f"{CLIENT_ID}: Counter reached 0. Sending alert...")
                         # Encode the image to Base64
                         _, img_encoded = cv2.imencode(".jpg", frame)
                         img_data = base64.b64encode(img_encoded).decode("utf-8")
-                        message = f"Object count below threshold detected by {CLIENT_ID}!"
+                        message = f"Product count below threshold detected by {CLIENT_ID}!"
                         send_image_to_server(img_data, message)
                         COUNTER = 5  # Reset the counter after sending the alert
                 else:
-                    print(f"{CLIENT_ID}: Object count: {object_count} < Threshold count: {threshold_value} Counter: {COUNTER}")
+                    print(f"{CLIENT_ID}: Product count: {product_count} >= Threshold count: {threshold_value} Counter: {COUNTER}")
                     COUNTER = 5  # Reset the counter if threshold is met
             else:
                 print(f"{CLIENT_ID}: Error capturing image.")
@@ -142,6 +141,31 @@ def capture_images():
         cap.release()
         print(f"{CLIENT_ID}: Camera released on exit.")
     cv2.destroyAllWindows()
+
+
+def count_products_in_frame(frame):
+    """
+    Process the frame to count only products and exclude other categories.
+
+    Args:
+        frame: The image frame to process.
+
+    Returns:
+        product_count (int): The count of detected products.
+        results: Detection results for visualization.
+    """
+    # Assuming `model` is your YOLO model loaded elsewhere
+    results = model(frame)
+    product_count = 0
+
+    for result in results:
+        for box in result.boxes:
+            class_id = int(box.cls)  # Get the class ID
+            if class_id == 2:  # Assuming 'product' has class ID 2
+                product_count += 1
+
+    return product_count, results
+
 
 
 if __name__ == "__main__":
